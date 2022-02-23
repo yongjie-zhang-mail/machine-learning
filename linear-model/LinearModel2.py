@@ -6,8 +6,9 @@
 模型评估
 """
 
+import joblib
 from sklearn.datasets import load_boston
-from sklearn.linear_model import LinearRegression, SGDRegressor
+from sklearn.linear_model import LinearRegression, SGDRegressor, Ridge, RidgeCV
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -35,10 +36,47 @@ def linear_model2():
     """
     x_test, x_train, y_test, y_train = prepare()
 
-    # 机器学习（线性回归）
+    # 机器学习
     estimator = SGDRegressor(max_iter=1000)
     estimator.fit(x_train, y_train)
     print("这个模型的偏置是：\n", estimator.intercept_)
+
+    assess(estimator, x_test, y_test)
+
+
+def linear_model3():
+    """
+    岭回归
+    :return: None
+    """
+    x_test, x_train, y_test, y_train = prepare()
+
+    # 机器学习
+    # estimator = Ridge()
+    estimator = RidgeCV(alphas=(0.001, 0.1, 1, 10, 100))
+    estimator.fit(x_train, y_train)
+    print("这个模型的偏置是：\n", estimator.intercept_)
+
+    assess(estimator, x_test, y_test)
+
+
+def model_dump_load():
+    """
+    模型保存和加载
+    :return: None
+    """
+    x_test, x_train, y_test, y_train = prepare()
+
+    # 机器学习
+    estimator = Ridge()
+    # estimator = RidgeCV(alphas=(0.001, 0.1, 1, 10, 100))
+    estimator.fit(x_train, y_train)
+    print("这个模型的偏置是：\n", estimator.intercept_)
+
+    # 模型保存
+    joblib.dump(estimator, "./model/ridge_model.pkl")
+    # 模型加载
+    estimator = joblib.load("./model/ridge_model.pkl")
 
     assess(estimator, x_test, y_test)
 
@@ -70,5 +108,7 @@ def assess(estimator, x_test, y_test):
 
 
 if __name__ == '__main__':
-    linear_model1()
-    linear_model2()
+    # linear_model1()
+    # linear_model2()
+    # linear_model3()
+    model_dump_load()
