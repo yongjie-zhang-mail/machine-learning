@@ -1,3 +1,4 @@
+import torch
 from torch import nn
 from torch.nn import functional as F
 
@@ -11,3 +12,11 @@ class MLP(nn.Module):
 
     def forward(self, X):
         return self.out(F.relu(self.hidden(X)))
+
+
+if __name__ == '__main__':
+    # 随机初始化 张量 2行20列
+    X = torch.rand(2, 20)
+    net = MLP()
+    print(X)
+    print(net(X))
