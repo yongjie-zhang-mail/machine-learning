@@ -27,6 +27,7 @@ class Channels():
         # 小k的形状：ci * kh * kw
         return torch.stack([self.corr2d_multi_in(X, k) for k in K], dim=0)
 
+
     def test1(self):
         X = torch.tensor([[[0.0, 1.0, 2.0], [3.0, 4.0, 5.0], [6.0, 7.0, 8.0]],
                           [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]]])
@@ -66,9 +67,40 @@ class Channels():
         Y = self.corr2d_multi_in_out(X, K2)
         print(Y)
 
+    # 输出的通道数：co；输入的通道数：ci；
+    # X的形状：ci * nh * nw
+    # K的形状：co * ci * kh * kw
+    # Y的形状：co * nh2 * nw2
+    def corr2d_multi_in_out_1X1(self, X, K):
+        ci, nh, nw = X.shape
+        co = K.shape[0]
+
+        X = X.reshape((ci, nh * nw))
+        K = K.reshape((co, ci))
+
+        Y = torch.matmul(K, X)
+        Y = Y.reshape((co, nh, nw))
+        return Y
+
+    # 输出的通道数：co；输入的通道数：ci；
+    # X的形状：ci * nh * nw
+    # K的形状：co * ci * kh * kw
+    # Y的形状：co * nh2 * nw2
+    def test3(self):
+        X = torch.normal(mean=0, std=1, size=(3, 3, 3))
+        K = torch.normal(mean=0, std=1, size=(2, 3, 1, 1))
+        Y1 = self.corr2d_multi_in_out_1X1(X, K)
+        Y2 = self.corr2d_multi_in_out(X, K)
+        R = float(torch.abs(Y1 - Y2).sum()) < 1e-6
+        print(Y1)
+        print(Y2)
+        print(R)
+        assert R
+
 
 if __name__ == '__main__':
     c = Channels()
     # c.test1()
     # c.test_stack()
-    c.test2()
+    # c.test2()
+    c.test3()
