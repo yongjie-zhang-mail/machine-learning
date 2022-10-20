@@ -127,7 +127,7 @@ class LeNet():
             test_acc = self.evaluate_accuracy_gpu(net, test_iter)
             animator.add(epoch + 1, (None, None, test_acc))
 
-        animator.show()
+        # animator.show()
         print(f'train loss:{train_l:.3f}, train acc:{train_acc:.3f}, test acc:{test_acc:.3f}')
         total_time = timer.sum()
         total_count = num_epochs * metric[2]
@@ -148,7 +148,7 @@ class LeNet():
         net = self.get_lenet()
         batch_size = 256
         train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size=batch_size)
-        lr, num_epochs = 0.9, 5
+        lr, num_epochs = 0.9, 10
         self.train6_3(net, train_iter, test_iter, num_epochs, lr, d2l.try_gpu())
 
 
