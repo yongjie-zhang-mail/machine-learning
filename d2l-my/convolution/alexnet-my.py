@@ -7,9 +7,6 @@ class AlexNet:
     def __init__(self):
         super().__init__()
 
-    def test1(self):
-        print(1)
-
     def get_alexnet(self):
         # 处理 fashion-MNIST，入参通道数 和 出参通道数 和原论文 不太一样
         net = nn.Sequential(
@@ -41,7 +38,7 @@ class AlexNet:
             X = layer(X)
             print(f'{layer.__class__.__name__} output shape: {X.shape}')
 
-    def test3(self):
+    def train(self):
         batch_size = 128
         resize = 224
         train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size=batch_size, resize=resize)
@@ -49,6 +46,7 @@ class AlexNet:
         net = self.get_alexnet()
         num_epochs = 10
         lr = 0.01
+        # torch.device('cpu')
         device = d2l.try_gpu()
         d2l.train_ch6(net=net, train_iter=train_iter, test_iter=test_iter, num_epochs=num_epochs, lr=lr, device=device)
 
