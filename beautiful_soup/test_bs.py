@@ -1,5 +1,4 @@
 
-
 import requests
 from bs4 import BeautifulSoup
 
@@ -15,9 +14,8 @@ class DouBan:
         self.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 \
                         (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
         self.start_nums = []
-        for i in range(0, 25, 25):
+        for i in range(0, 251, 25):
             self.start_nums.append(i)
-
         # print(self.start_nums)
 
     def get_top250_movie_names(self):
@@ -38,29 +36,9 @@ class DouBan:
         print(top250_movie_names)
 
 
-
-
-
-
-
 if __name__ == '__main__':
     douBan = DouBan()
     douBan.get_top250_movie_names()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
