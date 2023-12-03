@@ -21,12 +21,11 @@ import json
 # 3.Save the "category" variable and "id" variable obtained by traversing each folder as one line into the output.txt document.
 
 
-
-
 # define a function to find the entry.json file
 def find_entry_json():
     # Define the input directory
     input_dir = "D:\\B站视频\\临时"
+    
 
     # Define the output file
     output_file = "D:\\B站视频\\临时\\output.txt"
@@ -42,7 +41,7 @@ def find_entry_json():
 
                 # Construct the full path of entry.json
                 entry_path = os.path.join(root, "entry.json")
-
+                
                 # Open the entry.json file in read mode
                 with open(entry_path, "r", encoding="utf-8") as e:
 
