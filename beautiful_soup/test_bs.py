@@ -2,12 +2,6 @@
 import requests
 from bs4 import BeautifulSoup
 
-# url = 'https://www.python.org/~guido/'
-# r = requests.get(url)
-# html_doc = r.text
-# soup = BeautifulSoup(html_doc, 'html.parser')
-# print(soup.prettify())
-
 class DouBan:
     def __init__(self):
         self.url = 'https://movie.douban.com/top250'
@@ -34,6 +28,14 @@ class DouBan:
 
         print(len(top250_movie_names))
         print(top250_movie_names)
+
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__':
