@@ -30,13 +30,7 @@ from langchain_community.document_loaders import NotionDirectoryLoader
 class DocLoading:
 
     def __init__(self):
-        self.list_url = 'https://www.ncbi.nlm.nih.gov/omim'
-
-    def estrip(self, string):
-        if string:
-            return string.strip()
-        else:
-            return None
+        self.webpage_url = "https://github.com/datawhalechina/d2l-ai-solutions-manual/blob/master/docs/README.md"
         
     def view_docs(self, pages):
         print("Type of pages: ", type(pages))
@@ -85,7 +79,7 @@ class DocLoading:
 
     def load_webpage(self): 
         # 创建一个 WebBaseLoader Class 实例
-        url = "https://github.com/datawhalechina/d2l-ai-solutions-manual/blob/master/docs/README.md"
+        url = self.webpage_url
         header = {'User-Agent': 'python-requests/2.27.1', 
                 'Accept-Encoding': 'gzip, deflate, br', 
                 'Accept': '*/*',
@@ -113,12 +107,12 @@ if __name__ == '__main__':
     # print("Hello, World!")
     docLoad = DocLoading()
     # docLoad.load_doc()
-    # docLoad.load_webpage()
-    docLoad.load_notion()
+    docLoad.load_webpage()
+    # docLoad.load_notion()
 
 
 
-    
+
 
 
 
