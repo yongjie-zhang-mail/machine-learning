@@ -2,18 +2,40 @@
 # pip install -Uq pypdf
 # pip install -Uq chromadb
 
+# 通过 modelscope 下载模型
+# pip install modelscope==1.9.5
+# pip install transformers==4.35.2
+# pip install modelscope
+# pip install transformers
+
+
+
+import os
+from modelscope.hub.snapshot_download import snapshot_download
+
 # from langchain.document_loaders import PyPDFLoader
 from langchain_community.document_loaders import PyPDFLoader
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-
+from langchain.embeddings.huggingface import HuggingFaceEmbeddings
 
 class VsEmbedding:
 
     def __init__(self):
         self.text2 = "abcdefghijklmnopqrstuvwxyzabcdefg"
-        
+
+
+    def download_model(self):
+        # 创建保存模型目录
+        os.system("mkdir /root/models")
+
+        # save_dir是模型保存到本地的目录
+        save_dir="/root/models"
+
+        snapshot_download("Shanghai_AI_Laboratory/internlm2-chat-1_8b", 
+                        cache_dir=save_dir, 
+                        revision='v1.1.0')    
 
     
     def load_doc(self): 
@@ -39,6 +61,10 @@ class VsEmbedding:
 
         splits = text_splitter.split_documents(docs)
         print(len(splits))
+
+    def embedding(self):
+        embeddings = HuggingFaceEmbeddings(model_name="/root/data/model/sentence-transformer")
+        embeddings.embed_query
 
 
 
