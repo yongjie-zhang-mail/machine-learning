@@ -8,17 +8,29 @@
 # pip install modelscope
 # pip install transformers
 
+# mkdir -p /lab/models
+# pip install -U sentence-transformers
+
+# 若使用 root 账号启动
+# jupyter notebook --allow-root
 
 
 import os
-from modelscope.hub.snapshot_download import snapshot_download
+# from modelscope.hub.snapshot_download import snapshot_download
+from modelscope import snapshot_download
 
 # from langchain.document_loaders import PyPDFLoader
 from langchain_community.document_loaders import PyPDFLoader
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-from langchain.embeddings.huggingface import HuggingFaceEmbeddings
+# from langchain.embeddings.huggingface import HuggingFaceEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
+
+from sentence_transformers import SentenceTransformer
+
+import numpy as np
+
 
 class VsEmbedding:
 
@@ -26,18 +38,39 @@ class VsEmbedding:
         self.text2 = "abcdefghijklmnopqrstuvwxyzabcdefg"
 
 
-    def download_model(self):
-        # 创建保存模型目录
-        os.system("mkdir /root/models")
-
+    def download_embedding_model(self):
         # save_dir是模型保存到本地的目录
-        save_dir="/root/models"
+        save_dir="/lab/models"
+        # 模型下载
+        # snapshot_download("xrunda/m3e-base", 
+        #                 cache_dir=save_dir, 
+        #                 revision='v1.1.0')
+        snapshot_download("xrunda/m3e-base", 
+                        cache_dir=save_dir)
 
-        snapshot_download("Shanghai_AI_Laboratory/internlm2-chat-1_8b", 
-                        cache_dir=save_dir, 
-                        revision='v1.1.0')    
 
-    
+    def test_m3e(self): 
+        # /lab/models/m3e-base
+        # model = SentenceTransformer('moka-ai/m3e-base')
+        model = SentenceTransformer('/lab/models/m3e-base')
+
+        #Our sentences we like to encode
+        sentences = [
+            '* Moka 此文本嵌入模型由 MokaAI 训练并开源，训练脚本使用 uniem',
+            '* Massive 此文本嵌入模型通过**千万级**的中文句对数据集进行训练',
+            '* Mixed 此文本嵌入模型支持中英双语的同质文本相似度计算，异质文本检索等功能，未来还会支持代码检索，ALL in one'
+        ]
+
+        #Sentences are encoded by calling model.encode()
+        embeddings = model.encode(sentences)
+
+        #Print the embeddings
+        for sentence, embedding in zip(sentences, embeddings):
+            print("Sentence:", sentence)
+            print("Embedding:", embedding)
+            print("")
+
+
     def load_doc(self): 
         # 加载 PDF
         loaders = [
@@ -63,15 +96,43 @@ class VsEmbedding:
         print(len(splits))
 
     def embedding(self):
-        embeddings = HuggingFaceEmbeddings(model_name="/root/data/model/sentence-transformer")
-        embeddings.embed_query
+        # sentence1 = "i like dogs"
+        # sentence2 = "i like canines"
+        # sentence3 = "the weather is ugly outside"
 
+        sentence1 = "我喜欢狗"
+        sentence2 = "我喜欢犬科动物"
+        sentence3 = "外面的天气很糟糕"
+
+        # /lab/models/m3e-base        
+        embedding_model = SentenceTransformer('/lab/models/m3e-base')
+
+        #Sentences are encoded by calling model.encode()
+        embedding1 = embedding_model.encode(sentence1)
+        # print("Embedding1:", embedding1)
+        # 计算嵌入向量的模
+        # print(np.linalg.norm(embedding1))
+        embedding1 = self.norm(embedding1)
+        # print(np.linalg.norm(embedding1))
+
+        embedding2 = self.norm(embedding_model.encode(sentence2))
+        embedding3 = self.norm(embedding_model.encode(sentence3))
+
+        print(np.dot(embedding1, embedding2))
+        print(np.dot(embedding1, embedding3))
+        print(np.dot(embedding2, embedding3))
+
+
+    def norm(self, embedding):
+        return embedding / np.linalg.norm(embedding)
 
 
 if __name__ == '__main__':
     # print("Hello, World!")
     vsEmbedding = VsEmbedding()
-    vsEmbedding.load_doc()
+    # vsEmbedding.download_embedding_model()
+    # vsEmbedding.test_m3e()
+    vsEmbedding.embedding()
 
 
 
