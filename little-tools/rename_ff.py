@@ -32,6 +32,62 @@ class RenameFF:
                     print(f"Renamed '{filename}' to '{new_name}'")
 
 
+    def rename_folders_current_dir_recursive(self):
+        """
+        Renames folders in the current directory and all its subdirectories by removing the characters before the '@' symbol in the folder name.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
+        # 遍历当前目录
+        for root, dirs, files in os.walk(os.getcwd()):
+            for dirname in dirs:
+                if '@' in dirname:
+                    # 提取 '@' 之后的部分
+                    new_dirname = dirname.split('@', 1)[1]
+                    
+                    # 构建完整的路径
+                    old_dirpath = os.path.join(root, dirname)
+                    new_dirpath = os.path.join(root, new_dirname)
+                    
+                    # 重命名文件夹
+                    os.rename(old_dirpath, new_dirpath)
+                    print(f"Renamed '{dirname}' to '{new_dirname}'")
+
+
+
+    def rename_folders_current_dir_recursive2(self):
+        """
+        Renames folders in the current directory and all its subdirectories by removing the characters before the '@' symbol in the folder name.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
+        # 遍历当前目录
+        for root, dirs, files in os.walk(os.getcwd()):
+            # 处理当前层级的所有目录
+            dirs[:] = [d for d in dirs if not ('@' in d and d.split('@', 1)[1] != d)]
+            
+            for dirname in dirs[:]:  # 使用一个拷贝来安全地遍历和修改
+                if '@' in dirname:
+                    # 提取 '@' 之后的部分
+                    new_dirname = dirname.split('@', 1)[1]
+                    
+                    # 构建完整的路径
+                    old_dirpath = os.path.join(root, dirname)
+                    new_dirpath = os.path.join(root, new_dirname)
+                    
+                    # 重命名文件夹
+                    os.rename(old_dirpath, new_dirpath)
+                    print(f"Renamed '{dirname}' to '{new_dirname}'")
+
+
     def rename_files(self, path):
         """
         Renames files in the specified directory by removing the characters before the '@' symbol in the filename.
@@ -116,6 +172,8 @@ if __name__ == '__main__':
     # 调用函数
     # rff.rename_files(r'C:\download1\temp2')
     # rff.rename_files_current_dir()
+
+    rff.rename_folders_current_dir_recursive2()
     rff.rename_files_current_dir_recursive()
     
     

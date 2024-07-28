@@ -23,6 +23,9 @@ from langchain_community.embeddings import DashScopeEmbeddings
 from langchain.schema.runnable import RunnableMap
 
 
+from langchain_core.tools import tool
+
+
 
 
 
@@ -124,7 +127,7 @@ class AgentTest:
         print(result)      
 
 
-    def bind_function(self): 
+    def bind_function_test(self): 
         # 定义一个函数
         functions = [
             {
@@ -145,7 +148,72 @@ class AgentTest:
         ]
 
 
+        prompt = ChatPromptTemplate.from_messages(
+            [
+                ("human", "{input}")
+            ]
+        )
 
+
+        model = ChatTongyi().bind(functions=functions)
+
+        runnable = prompt | model
+
+        result = runnable.invoke({"input": "北京天气怎么样？"})
+        print(result)
+        print(result.tool_calls)
+
+        # Tool calling:
+
+        # from langchain_core.pydantic_v1 import BaseModel, Field  
+        # class GetWeather(BaseModel):  
+        # '''Get the current weather in a given location'''  
+        # location: str = Field(  
+        # ..., description="The city and state, e.g. San Francisco, CA"  
+        # )  
+        # class GetPopulation(BaseModel):  
+        # '''Get the current population in a given location'''  
+        # location: str = Field(  
+        # ..., description="The city and state, e.g. San Francisco, CA"  
+        # )  
+        # chat_with_tools = tongyi_chat.bind_tools([GetWeather, GetPopulation])  
+        # ai_msg = chat_with_tools.invoke(  
+        # "Which city is hotter today and which is bigger: LA or NY?"  
+        # )  
+        # ai_msg.tool_calls
+        # [  
+        # {  
+        # 'name': 'GetWeather',  
+        # 'args': {'location': 'Los Angeles, CA'},  
+        # 'id': ''  
+        # }  
+        # ]
+
+
+
+
+
+    def bind_function_test2(self): 
+
+
+        @tool
+        def multiply(first: int, second: int) -> int:
+            """
+            Multiply two numbers.
+
+            Args:
+                first (int): The first number.
+                second (int): The second number.
+
+            Returns:
+                int: The product of the two numbers.
+            """
+            return first * second
+        
+
+        model = ChatTongyi().bind_tools([multiply])
+        msg = model.invoke("计算 10 的 5 倍")
+        print(msg)
 
 
 
@@ -159,6 +227,10 @@ if __name__ == '__main__':
     # 测试问题："哈里森在哪里工作？", "熊喜欢吃什么？"
     # message = "哈里森在哪里工作？"
     # agentTest.runnable_map_test(message=message)
+    # agentTest.bind_function_test()
+    agentTest.bind_function_test2()
+
+    
 
 
 
