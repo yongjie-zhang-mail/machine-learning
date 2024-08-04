@@ -173,7 +173,7 @@ if __name__ == '__main__':
     # rff.rename_files(r'C:\download1\temp2')
     # rff.rename_files_current_dir()
 
-    rff.rename_folders_current_dir_recursive2()
+    rff.rename_folders_current_dir_recursive()
     rff.rename_files_current_dir_recursive()
     
     
