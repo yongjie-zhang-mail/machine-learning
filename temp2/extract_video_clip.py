@@ -29,7 +29,7 @@ def extract_clip(video_url, start_time, duration=15, output_path='output_clip.mp
 if __name__ == "__main__":
     # 替换为实际视频路径
     # video_url = "https://leforge.lenovo.com/res/upload/leforge/0172b4914a9247d7a037c99e52f9e0d7.mp4"  
-    # video_url = "/source/lab/machine-learning/downloaded_video.mp4"
+    video_url = "/source/lab/machine-learning/downloaded_video.mp4"
     # 替换为实际开始时间
     start_time = 30  
     extract_clip(video_url, start_time)
