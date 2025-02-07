@@ -66,7 +66,7 @@ def download_video(video_url, download_path='downloaded_video.mp4'):
 if __name__ == "__main__":    
 
     # 下载原始视频
-    video_url = "https://leforge.lenovo.com/res/upload/leforge/0172b4914a9247d7a037c99e52f9e0d7.mp4"  
+    video_url = ""  
     download_path = download_video(video_url=video_url)
     print(f"原始视频下载路径：{download_path}")
 
