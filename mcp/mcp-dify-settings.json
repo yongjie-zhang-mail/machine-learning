@@ -1,0 +1,8 @@
+{
+    "server_name": {
+        "url": "https://mcp.composio.dev/tavily/great-mushy-garden-urdSWo",
+        "headers": {},
+        "timeout": 60,
+        "sse_read_timeout": 300
+    }
+}
