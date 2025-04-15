@@ -99,7 +99,7 @@ async def bing_web_search(
 
     """
     # Get API key from environment
-    api_key = os.environ.get("BING_API_KEY", "1ec9b41fda0a42e9bed334a12ffa9770")
+    api_key = os.environ.get("BING_API_KEY", "")
 
     if not api_key:
         return "Error: Bing API key is not configured. Please set the BING_API_KEY environment variable."
@@ -164,7 +164,7 @@ async def bing_news_search(
         freshness: Time period of news (Day, Week, Month)
     """
     # Get API key from environment
-    api_key = os.environ.get("BING_API_KEY", "1ec9b41fda0a42e9bed334a12ffa9770")
+    api_key = os.environ.get("BING_API_KEY", "")
 
     if not api_key:
         return "Error: Bing API key is not configured. Please set the BING_API_KEY environment variable."
@@ -230,7 +230,7 @@ async def bing_image_search(
         market: Market code like en-US, en-GB, etc.
     """
     # Get API key from environment
-    api_key = os.environ.get("BING_API_KEY", "1ec9b41fda0a42e9bed334a12ffa9770")
+    api_key = os.environ.get("BING_API_KEY", "")
 
     if not api_key:
         return "Error: Bing API key is not configured. Please set the BING_API_KEY environment variable."
