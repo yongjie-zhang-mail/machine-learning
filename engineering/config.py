@@ -1,8 +1,8 @@
 # vLLM Qwen3 流式调用配置
 VLLM_CONFIG = {
-    "base_url": "http://localhost:8000/v1",
+    "base_url": "http://127.0.0.1:8002/v1",
     "api_key": "EMPTY",
-    "model": "Qwen/Qwen2.5-7B-Instruct",
+    "model": "Qwen3-0.6B",
     "timeout": 60.0
 }
 

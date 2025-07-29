@@ -176,7 +176,7 @@ def error_handling_example():
     
     # 测试无效的配置
     invalid_config = VLLM_CONFIG.copy()
-    invalid_config["base_url"] = "http://invalid-url:8000/v1"
+    invalid_config["base_url"] = "http://invalid-url:8002/v1"
     
     client = VLLMStreamChat(**invalid_config)
     

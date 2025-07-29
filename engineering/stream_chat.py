@@ -17,9 +17,9 @@ class VLLMStreamChat:
     
     def __init__(
         self, 
-        base_url: str = "http://localhost:8000/v1",
+        base_url: str = "http://127.0.0.1:8002/v1",
         api_key: str = "EMPTY",
-        model: str = "Qwen/Qwen2.5-7B-Instruct",
+        model: str = "Qwen3-0.6B",
         timeout: float = 60.0
     ):
         """
@@ -175,8 +175,8 @@ def interactive_chat():
     
     # 创建聊天客户端
     chat_client = VLLMStreamChat(
-        base_url="http://localhost:8000/v1",  # 根据实际部署修改
-        model="Qwen/Qwen2.5-7B-Instruct"     # 根据实际模型修改
+        base_url="http://127.0.0.1:8002/v1",  # 根据实际部署修改
+        model="Qwen3-0.6B"     # 根据实际模型修改
     )
     
     # 系统提示词
@@ -228,8 +228,8 @@ def demo_streaming():
     
     # 创建聊天客户端
     chat_client = VLLMStreamChat(
-        base_url="http://localhost:8000/v1",
-        model="Qwen/Qwen2.5-7B-Instruct"
+        base_url="http://127.0.0.1:8002/v1",
+        model="Qwen3-0.6B"
     )
     
     # 示例问题
@@ -268,8 +268,8 @@ def test_connection():
     
     try:
         chat_client = VLLMStreamChat(
-            base_url="http://localhost:8000/v1",
-            model="Qwen/Qwen2.5-7B-Instruct"
+            base_url="http://127.0.0.1:8002/v1",
+            model="Qwen3-0.6B"
         )
         
         print("正在测试连接...")
@@ -287,7 +287,7 @@ def test_connection():
         print(f"连接失败: {e}")
         print("\n请检查:")
         print("1. vLLM 服务是否正在运行")
-        print("2. 服务地址是否正确 (默认: http://localhost:8000)")
+        print("2. 服务地址是否正确 (默认: http://127.0.0.1:8002)")
         print("3. 模型名称是否正确")
 
 

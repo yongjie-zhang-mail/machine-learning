@@ -22,11 +22,11 @@ pip install -r requirements.txt
 
 ### 1. 启动 vLLM 服务
 
-首先确保 vLLM 服务正在运行，默认地址为 `http://localhost:8000`：
+首先确保 vLLM 服务正在运行，默认地址为 `http://127.0.0.1:8002`：
 
 ```bash
 # 示例启动命令（根据实际情况调整）
-vllm serve Qwen/Qwen2.5-7B-Instruct --host 0.0.0.0 --port 8000
+vllm serve Qwen3-0.6B --host 127.0.0.1 --port 8002
 ```
 
 ### 2. 测试连接
@@ -64,8 +64,8 @@ from stream_chat import VLLMStreamChat
 
 # 创建客户端
 client = VLLMStreamChat(
-    base_url="http://localhost:8000/v1",
-    model="Qwen/Qwen2.5-7B-Instruct"
+    base_url="http://127.0.0.1:8002/v1",
+    model="Qwen3-0.6B"
 )
 
 # 流式对话
@@ -115,9 +115,9 @@ client.set_history(history)
 
 ```python
 VLLM_CONFIG = {
-    "base_url": "http://localhost:8000/v1",  # vLLM 服务地址
+    "base_url": "http://127.0.0.1:8002/v1",  # vLLM 服务地址
     "api_key": "EMPTY",                      # API 密钥
-    "model": "Qwen/Qwen2.5-7B-Instruct",    # 模型名称
+    "model": "Qwen3-0.6B",    # 模型名称
     "timeout": 60.0                          # 超时时间
 }
 ```
