@@ -12,7 +12,9 @@ DEFAULT_PARAMS = {
     "max_tokens": 2048,
     "top_p": 0.9,
     "frequency_penalty": 0.0,
-    "presence_penalty": 0.0
+    "presence_penalty": 0.0,
+    "enable_thinking": True,
+    "show_thinking": True
 }
 
 # 系统提示词模板

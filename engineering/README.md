@@ -5,6 +5,7 @@
 ## 功能特性
 
 - ✅ 流式对话支持
+- ✅ **模型思考过程输出** - 🆕 显示AI的推理过程
 - ✅ 对话历史管理
 - ✅ 多种系统提示词模板
 - ✅ 灵活的参数配置
@@ -51,6 +52,9 @@ python stream_chat.py
 # 流式调用演示
 python stream_chat.py demo
 
+# 思考模式演示
+python stream_chat.py thinking
+
 # 各种使用示例
 python examples.py
 ```
@@ -89,9 +93,32 @@ for chunk in client.stream_chat(
     system_prompt="你是一个专业的编程助手",
     temperature=0.3,
     max_tokens=1024,
-    top_p=0.9
+    top_p=0.9,
+    enable_thinking=True,
+    show_thinking=True
 ):
     print(chunk, end="", flush=True)
+```
+
+### 🧠 思考模式
+
+```python
+# 显示AI的思考过程
+for chunk in client.stream_chat(
+    message="9.9和9.11谁大？请详细分析",
+    enable_thinking=True,
+    show_thinking=True
+):
+    print(chunk, end="", flush=True)
+
+# 分别处理思考和答案内容
+for chunk_data in client.thinking_chat(
+    message="解释一下量子计算的基本原理"
+):
+    if chunk_data["type"] == "thinking":
+        print(f"思考: {chunk_data['content']}", end="")
+    elif chunk_data["type"] == "answer":
+        print(f"答案: {chunk_data['content']}", end="")
 ```
 
 ### 对话历史管理
