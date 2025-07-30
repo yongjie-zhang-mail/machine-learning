@@ -106,6 +106,7 @@ class VLLMStreamChat:
             # 收集完整回复用于历史记录
             full_response = ""
             done_thinking = False
+            started_thinking = False
             
             # 流式输出
             for chunk in stream:
@@ -115,6 +116,9 @@ class VLLMStreamChat:
                 answer_chunk = chunk.choices[0].delta.content or ''
                 
                 if thinking_chunk and show_thinking:
+                    if not started_thinking:
+                        yield '\n\n=== 已深度思考 ===\n'
+                        started_thinking = True
                     yield thinking_chunk
                 elif answer_chunk:
                     if not done_thinking and show_thinking and enable_thinking:
