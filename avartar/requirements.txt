@@ -1,0 +1,32 @@
+# TTS API Server Requirements
+# 核心依赖
+
+# FastAPI 框架 - REST API 服务器
+fastapi==0.104.1
+
+# ASGI 服务器 - 用于运行 FastAPI 应用
+uvicorn[standard]==0.24.0
+
+# HTTP 客户端库 - 用于调用外部 TTS API
+requests==2.31.0
+
+# SSL/TLS 处理 - 禁用 SSL 警告
+urllib3==2.1.0
+
+# 数据验证和序列化 - FastAPI 的核心依赖
+pydantic==2.5.0
+
+# 可选依赖
+
+# 如果需要更详细的日志记录
+# loguru==0.7.2
+
+# 如果需要配置文件支持
+# python-dotenv==1.0.0
+
+# 如果需要异步HTTP客户端
+# httpx==0.25.2
+
+# 开发依赖（可选）
+# pytest==7.4.3
+# pytest-asyncio==0.21.1
