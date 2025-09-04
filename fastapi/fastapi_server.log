@@ -1,0 +1,18 @@
+2025-09-04 15:48:42,262 - __main__ - INFO - 正在启动 FastAPI 服务器...
+2025-09-04 15:48:42,262 - __main__ - INFO - 服务器配置: host=0.0.0.0, port=8000
+2025-09-04 15:48:47,040 - __main__ - INFO - 访问根路径接口 - 客户端请求 API 信息
+2025-09-04 15:48:47,041 - __main__ - INFO - 根路径接口响应成功 - 返回数据: {'message': '欢迎使用 FastAPI Demo Server', 'version': '1.0.0', 'endpoints': {'hello': '/hello', 'health': '/health', 'docs': '/docs'}}
+2025-09-04 15:49:07,942 - __main__ - INFO - 访问 /hello 接口
+2025-09-04 15:49:07,942 - __main__ - INFO - /hello 接口响应成功 - 返回消息: hello fastapi
+2025-09-04 15:49:20,460 - __main__ - INFO - 访问 /hello 接口
+2025-09-04 15:49:20,460 - __main__ - INFO - /hello 接口响应成功 - 返回消息: hello fastapi
+2025-09-04 15:49:30,606 - __main__ - INFO - 访问 /hello 接口
+2025-09-04 15:49:30,606 - __main__ - INFO - /hello 接口响应成功 - 返回消息: hello fastapi
+2025-09-04 15:49:31,805 - __main__ - INFO - 访问 /hello 接口
+2025-09-04 15:49:31,806 - __main__ - INFO - /hello 接口响应成功 - 返回消息: hello fastapi
+2025-09-04 15:49:32,273 - __main__ - INFO - 访问 /hello 接口
+2025-09-04 15:49:32,273 - __main__ - INFO - /hello 接口响应成功 - 返回消息: hello fastapi
+2025-09-04 15:49:32,502 - __main__ - INFO - 访问 /hello 接口
+2025-09-04 15:49:32,502 - __main__ - INFO - /hello 接口响应成功 - 返回消息: hello fastapi
+2025-09-04 15:49:32,677 - __main__ - INFO - 访问 /hello 接口
+2025-09-04 15:49:32,677 - __main__ - INFO - /hello 接口响应成功 - 返回消息: hello fastapi
