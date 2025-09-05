@@ -10,4 +10,4 @@ echo "按 Ctrl+C 停止服务器"
 echo "----------------------------------------"
 
 # 启动 FastAPI 服务器
-python main.py
+python /home/app/main.py

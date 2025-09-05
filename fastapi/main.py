@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from typing import Optional
+from pydantic import BaseModel
 import logging
 from datetime import datetime
 
@@ -12,6 +14,17 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger(__name__)
+
+# 定义请求体模型
+class Hello2Request(BaseModel):
+    name: Optional[str] = "FastAPI"
+    
+    class Config:
+        schema_extra = {
+            "example": {
+                "name": "World"
+            }
+        }
 
 # 创建 FastAPI 实例
 app = FastAPI(
@@ -33,6 +46,7 @@ async def root():
         "version": "1.0.0",
         "endpoints": {
             "hello": "/hello",
+            "hello2": "/hello2",
             "health": "/health",
             "docs": "/docs"
         }
@@ -52,6 +66,25 @@ async def hello_fastapi():
     response_data = {"message": "hello fastapi"}
     
     logger.info(f"/hello 接口响应成功 - 返回消息: {response_data['message']}")
+    return response_data
+
+# Hello2 FastAPI 接口 - 支持自定义名称 (POST 方式)
+@app.post("/hello2")
+async def hello2_fastapi(request: Hello2Request):
+    """
+    Hello2 FastAPI 接口，支持自定义名称参数 (POST 方式)
+    
+    请求体:
+    - name (可选): 要问候的名称，默认值为 'FastAPI'
+    
+    返回:
+    - 包含个性化问候消息的 JSON 响应
+    """
+    logger.info(f"访问 /hello2 接口 (POST) - 参数 name: {request.name}")
+    
+    response_data = {"message": f"hello {request.name}"}
+    
+    logger.info(f"/hello2 接口响应成功 - 返回消息: {response_data['message']}")
     return response_data
 
 # 健康检查接口
