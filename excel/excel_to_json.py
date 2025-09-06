@@ -10,6 +10,29 @@ import json
 import os
 import sys
 from pathlib import Path
+import datetime
+import numpy as np
+
+
+class DateTimeEncoder(json.JSONEncoder):
+    """自定义JSON编码器，处理日期时间对象"""
+    
+    def default(self, obj):
+        if isinstance(obj, datetime.time):
+            return obj.strftime('%H:%M:%S')
+        elif isinstance(obj, datetime.date):
+            return obj.strftime('%Y-%m-%d')
+        elif isinstance(obj, datetime.datetime):
+            return obj.strftime('%Y-%m-%d %H:%M:%S')
+        elif isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        elif pd.isna(obj):
+            return None
+        return super().default(obj)
 
 
 class ExcelToJsonConverter:
@@ -79,8 +102,27 @@ class ExcelToJsonConverter:
             
             # 为每个工作表创建单独的 JSON 文件
             for sheet_name, df in excel_data.items():
-                # 处理 NaN 值
+                # 处理 NaN 值和特殊数据类型
                 df_cleaned = df.fillna("")
+                
+                # 转换时间列为字符串格式
+                for col in df_cleaned.columns:
+                    if df_cleaned[col].dtype == 'object':
+                        # 检查是否包含时间对象
+                        sample_val = df_cleaned[col].dropna().iloc[0] if not df_cleaned[col].dropna().empty else None
+                        if isinstance(sample_val, (datetime.time, datetime.date, datetime.datetime)):
+                            if isinstance(sample_val, datetime.time):
+                                df_cleaned[col] = df_cleaned[col].apply(
+                                    lambda x: x.strftime('%H:%M:%S') if isinstance(x, datetime.time) else x
+                                )
+                            elif isinstance(sample_val, datetime.date):
+                                df_cleaned[col] = df_cleaned[col].apply(
+                                    lambda x: x.strftime('%Y-%m-%d') if isinstance(x, datetime.date) else x
+                                )
+                            elif isinstance(sample_val, datetime.datetime):
+                                df_cleaned[col] = df_cleaned[col].apply(
+                                    lambda x: x.strftime('%Y-%m-%d %H:%M:%S') if isinstance(x, datetime.datetime) else x
+                                )
                 
                 # 转换为字典格式
                 json_data = {
@@ -103,7 +145,7 @@ class ExcelToJsonConverter:
                 
                 # 写入 JSON 文件
                 with open(json_file_path, 'w', encoding=encoding) as f:
-                    json.dump(json_data, f, ensure_ascii=False, indent=2)
+                    json.dump(json_data, f, ensure_ascii=False, indent=2, cls=DateTimeEncoder)
                 
                 result['sheets_converted'].append(sheet_name)
                 result['output_files'].append(str(json_file_path))
