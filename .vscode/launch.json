@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "python": "/root/anaconda3/envs/lab/bin/python",
+            "env": {
+                "CONDA_DEFAULT_ENV": "lab",
+                "CONDA_PREFIX": "/root/anaconda3/envs/lab"
+            }
+        },
+        {
+            "name": "Python: FastAPI",
+            "type": "debugpy", 
+            "request": "launch",
+            "program": "${workspaceFolder}/fifa-buddy/fastapi/main.py",
+            "console": "integratedTerminal",
+            "python": "/root/anaconda3/envs/lab/bin/python",
+            "env": {
+                "CONDA_DEFAULT_ENV": "lab",
+                "CONDA_PREFIX": "/root/anaconda3/envs/lab"
+            }
+        }
+    ]
+}

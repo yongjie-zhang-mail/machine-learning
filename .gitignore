@@ -133,7 +133,8 @@ fastapi_server.log
 *.log
 
 # IDE specific files
-.vscode/
+# .vscode/  # 允许工作区级别的 VS Code 配置
+.vscode/settings.json.user  # 忽略用户特定的设置
 .idea/
 *.swp
 *.swo

@@ -1,0 +1,29 @@
+{
+    "python.defaultInterpreterPath": "/root/anaconda3/envs/lab/bin/python",
+    "python.terminal.activateEnvironment": true,
+    "python.condaPath": "/root/anaconda3/condabin/conda",
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "terminal.integrated.env.linux": {
+        "CONDA_DEFAULT_ENV": "lab",
+        "CONDA_PREFIX": "/root/anaconda3/envs/lab",
+        "PATH": "/root/anaconda3/envs/lab/bin:${env:PATH}"
+    },
+    "terminal.integrated.profiles.linux": {
+        "conda-lab": {
+            "path": "/bin/bash",
+            "args": [
+                "-c",
+                "source /root/anaconda3/etc/profile.d/conda.sh && conda activate lab && exec bash"
+            ],
+            "env": {
+                "CONDA_DEFAULT_ENV": "lab",
+                "CONDA_PREFIX": "/root/anaconda3/envs/lab"
+            }
+        },
+        "bash": {
+            "path": "/bin/bash",
+            "args": ["-l"]
+        }
+    },
+    "terminal.integrated.defaultProfile.linux": "conda-lab"
+}
