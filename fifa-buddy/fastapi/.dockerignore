@@ -1,24 +1,25 @@
-# Python cache
-__pycache__/
+# 排除不需要复制到容器的文件和目录
+Dockerfile
+.dockerignore
+README.md
+.git
+.gitignore
+__pycache__
 *.pyc
 *.pyo
 *.pyd
-
-# Virtual env
-venv/
-.env
-
-# Logs
+.Python
+env
+pip-log.txt
+pip-delete-this-directory.txt
+.tox
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
 *.log
-
-# Git
-.git
-.gitignore
-
-# IDE / Editor
-.vscode
-.idea
-*.swp
-
-# Others
-.DS_Store
+.venv
+.pytest_cache
+.mypy_cache
