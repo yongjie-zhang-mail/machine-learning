@@ -20,7 +20,7 @@ class Hello2Request(BaseModel):
     name: Optional[str] = "FastAPI"
     
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "name": "World"
             }
