@@ -1,5 +1,8 @@
 from typing_extensions import TypedDict
 
+# 引入同目录下 util.py 中的工具类 Util，用于渲染图
+from util import Util
+
 class State(TypedDict):
     graph_state: str
 
@@ -36,7 +39,6 @@ def decide_mood(state) -> Literal["node_2", "node_3"]:
 
 
 from langgraph.graph import StateGraph, START, END
-import os
 
 # Build graph
 builder = StateGraph(State)
@@ -53,19 +55,8 @@ builder.add_edge("node_3", END)
 # Add
 graph = builder.compile()
 
-
-def render_graph(g, outfile: str = "simple_graph.png", overwrite: bool = False) -> None:
-    """生成 Mermaid PNG；若文件已存在且未指定 overwrite，则跳过。"""
-    if not overwrite and os.path.isfile(outfile):
-        print(f"Skip existing: {outfile} (set overwrite=True to regenerate)")
-        return
-    with open(outfile, "wb") as f:
-        f.write(g.get_graph().draw_mermaid_png())
-    print(f"Saved graph PNG: {outfile}")
-
-
 # Render the graph to a PNG file (will skip if exists)
-render_graph(graph)
+Util.render_graph(g=graph, outfile="simple_graph.png", overwrite=True)
 
 # Invoke the graph with initial state
 resp = graph.invoke({"graph_state" : "Hi, this is Lance."})
