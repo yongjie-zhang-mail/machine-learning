@@ -142,3 +142,6 @@ fastapi_server.log
 # OS specific files
 .DS_Store
 Thumbs.db
+
+# Image assets (user request: do not commit PNG diagrams)
+*.png
