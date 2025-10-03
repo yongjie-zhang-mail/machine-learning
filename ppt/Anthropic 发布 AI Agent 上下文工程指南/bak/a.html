@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anthropic 上下文工程指南 - 网页版PPT</title>
+    <!-- 引入Tailwind CSS（简化样式） -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome（图标库） -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 基础样式：PPT页面容器 */
+        .ppt-page {
+            width: 100vw;
+            height: 100vh;
+            padding: 2rem;
+            box-sizing: border-box;
+            display: none; /* 默认隐藏所有页面 */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8fafc;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+        /* 显示当前页面 */
+        .ppt-page.active {
+            display: flex;
+            animation: fadeIn 0.5s ease;
+        }
+        /* 淡入动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        /* 导航按钮样式 */
+        .nav-btn {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        .prev-btn { left: 2rem; }
+        .next-btn { right: 2rem; }
+        /* 页码样式 */
+        .page-num {
+            position: fixed;
+            bottom: 1.5rem;
+            color: #64748b;
+            font-size: 1rem;
+        }
+        /* 响应式调整（手机端） */
+        @media (max-width: 768px) {
+            .ppt-page {
+                padding: 1rem;
+                text-align: center;
+            }
+            h1 { font-size: 1.8rem !important; }
+            h2 { font-size: 1.5rem !important; }
+            table { width: 100% !important; font-size: 0.8rem !important; }
+            .nav-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 第1页：封面 -->
+    <div class="ppt-page active" id="page1">
+        <div class="text-center">
+            <i class="fa-solid fa-robot text-6xl text-blue-500 mb-4"></i>
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">AI 智能体怎么用才靠谱？</h1>
+            <h2 class="text-2xl text-blue-600 mb-6">Anthropic 上下文工程指南「大白话版」</h2>
+            <div class="text-gray-500 space-y-2">
+                <p><i class="fa-solid fa-file-alt mr-2"></i>信息来源：Anthropic 官方博客 + Datawhale 解读</p>
+                <p><i class="fa-solid fa-lightbulb mr-2"></i>核心转变：从「写好提示词」→「搭好 AI 工作环境」</p>
+                <p><i class="fa-solid fa-user-check mr-2"></i>适合人群：AI 初学者、智能体开发入门者</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第2页：核心概念对比 -->
+    <div class="ppt-page" id="page2">
+        <h2 class="text-2.5xl font-bold text-gray-800 mb-6 text-center">上下文工程 vs 提示词工程 📊</h2>
+        <div class="w-full max-w-5xl overflow-x-auto">
+            <table class="border-collapse w-full bg-white rounded-lg shadow-md">
+                <thead>
+                    <tr class="bg-blue-500 text-white">
+                        <th class="border border-gray-300 p-3 text-left">对比维度</th>
+                        <th class="border border-gray-300 p-3 text-left">提示词工程（过去）</th>
+                        <th class="border border-gray-300 p-3 text-left">上下文工程（现在）</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border border-gray-300 p-3 font-semibold">核心思路</td>
+                        <td class="border border-gray-300 p-3"><i class="fa-solid fa-pen-to-square text-blue-500 mr-2"></i>写一句「精准指令」</td>
+                        <td class="border border-gray-300 p-3"><i class="fa-solid fa-house-chimney text-blue-500 mr-2"></i>搭一套「好用的信息环境」</td>
+                    </tr>
+                    <tr class="bg-gray-50">
+                        <td class="border border-gray-300 p-3 font-semibold">生活类比</td>
+                        <td class="border border-gray-300 p-3">给厨师递「一份详细菜谱」</td>
+                        <td class="border border-gray-300 p-3">给厨师准备「全套厨房（菜谱+食材+工具）」</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-gray-300 p-3 font-semibold">包含内容</td>
+                        <td class="border border-gray-300 p-3">仅指令（如“写300字奶茶宣传文案”）</td>
+                        <td class="border border-gray-300 p-3">
+                            1. <i class="fa-solid fa-book text-blue-500 mr-1"></i>核心指令<br>
+                            2. <i class="fa-solid fa-carrot text-blue-500 mr-1"></i>关键素材<br>
+                            3. <i class="fa-solid fa-wrench text-blue-500 mr-1"></i>实用工具<br>
+                            4. <i class="fa-solid fa-scroll text-blue-500 mr-1"></i>历史记录
+                        </td>
+                    </tr>
+                    <tr class="bg-gray-50">
+                        <td class="border border-gray-300 p-3 font-semibold">适用场景</td>
+                        <td class="border border-gray-300 p-3">单次简单任务（写文案、改格式）</td>
+                        <td class="border border-gray-300 p-3">长期/复杂任务（项目跟进、多轮分析）</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 第3页：为什么需要上下文工程 -->
+    <div class="ppt-page" id="page3">
+        <h2 class="text-2.5xl font-bold text-gray-800 mb-6 text-center">为啥非要搞「上下文工程」？🧠</h2>
+        <div class="w-full max-w-4xl bg-white rounded-lg shadow-md p-6 space-y-6">
+            <div class="text-center">
+                <h3 class="text-xl font-semibold text-blue-600 mb-2">核心痛点：AI 也会「记不住事」！</h3>
+                <p class="text-gray-700">专业说法：<span class="font-bold text-red-500">「上下文衰减」</span></p>
+                <p class="text-gray-600 mt-2">随着上下文文字（token）增多，AI 提取关键信息的能力会逐渐下降</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center gap-6">
+                <div class="flex-1 text-center p-4 bg-blue-50 rounded-lg">
+                    <i class="fa-solid fa-book-open text-5xl text-blue-500 mb-3"></i>
+                    <p class="text-gray-700">你读 500 页的书，看到第 400 页时，大概率忘了第 50 页的细节</p>
+                </div>
+                <div class="text-2xl text-gray-400">≈</div>
+                <div class="flex-1 text-center p-4 bg-blue-50 rounded-lg">
+                    <i class="fa-solid fa-brain text-5xl text-blue-500 mb-3"></i>
+                    <p class="text-gray-700">AI 面对 10 万字资料，会「看后面忘前面」，甚至混淆信息</p>
+                </div>
+            </div>
+
+            <div class="p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                <h4 class="font-semibold text-gray-800 mb-1"><i class="fa-solid fa-sack-dollar text-yellow-500 mr-2"></i>本质原因：AI 有「注意力预算」</h4>
+                <p class="text-gray-600">每多一个无关信息，就会挤占关键信息的「记忆空间」—— 像你逛超市列 30 样东西不分类，逛到一半肯定漏买！</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第4页：方法1 - 搭基础信息包 -->
+    <div class="ppt-page" id="page4">
+        <h2 class="text-2.5xl font-bold text-gray-800 mb-6 text-center">怎么搞？（1/3）搭好「基础信息包」⚙️</h2>
+        <div class="w-full max-w-4xl bg-white rounded-lg shadow-md p-6 space-y-6">
+            <h3 class="text-xl font-semibold text-blue-600 text-center mb-4">核心原则：简洁、有用、不啰嗦（避开两个极端）</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 错误做法 -->
+                <div class="p-4 border border-red-200 bg-red-50 rounded-lg">
+                    <h4 class="font-bold text-red-500 mb-2"><i class="fa-solid fa-circle-xmark mr-2"></i>极端做法（避坑！）</h4>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="font-semibold">❌ 太死板：</p>
+                            <p class="text-gray-600 text-sm">硬规定“第一步查数据，第二步写段落”（像让厨师切菜必须1厘米，多1毫米都不行）</p>
+                        </div>
+                        <div>
+                            <p class="font-semibold">❌ 太模糊：</p>
+                            <p class="text-gray-600 text-sm">只说“写一份好报告”（像让厨师“做个好吃的”，完全没方向）</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 正确做法 -->
+                <div class="p-4 border border-green-200 bg-green-50 rounded-lg">
+                    <h4 class="font-bold text-green-500 mb-2"><i class="fa-solid fa-circle-check mr-2"></i>正确做法（中间路线）</h4>
+                    <p class="text-gray-700 mb-2">✅ 明确边界：</p>
+                    <p class="text-gray-600 text-sm bg-white p-2 rounded">“做 Q3 产品销售报告，含销量数据、Top3 爆款分析、用户反馈；可用「查销量」工具调实时数据，参考 Q2 报告的核心结构（附2个示例段落）”</p>
+                    <p class="text-gray-700 mt-3">✅ 关键：给目标+工具+示例，不冗余、不缺漏</p>
+                </div>
+            </div>
+
+            <!-- 避坑点 -->
+            <div class="p-4 bg-orange-50 rounded-lg border-l-4 border-orange-400">
+                <h4 class="font-semibold text-gray-800 mb-1"><i class="fa-solid fa-triangle-exclamation text-orange-500 mr-2"></i>关键避坑点：工具别堆太多！</h4>
+                <p class="text-gray-600">给 AI 配 10 个工具（查数据、改格式、找文献…），它会纠结“用哪个”，反而变慢！→ 选 3 个最常用的（如「查数据+做图表+改格式」）就够了～</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第5页：方法2 - 即时检索 -->
+    <div class="ppt-page" id="page5">
+        <h2 class="text-2.5xl font-bold text-gray-800 mb-6 text-center">怎么搞？（2/3）干活时「需要啥拿啥」🔍</h2>
+        <div class="w-full max-w-4xl bg-white rounded-lg shadow-md p-6 space-y-6">
+            <!-- 旧思路 -->
+            <div class="p-4 border border-red-200 bg-red-50 rounded-lg">
+                <h4 class="font-bold text-red-500 mb-2"><i class="fa-solid fa-clock-rotate-left mr-2"></i>旧思路（低效）：❌</h4>
+                <p class="text-gray-600">把所有资料（1年销售数据、50篇用户评论）全塞进 AI 上下文 → 又乱又占空间，AI 看得头疼！</p>
+                <div class="flex justify-center mt-3">
+                    <i class="fa-solid fa-files-stacked text-4xl text-red-300"></i>
+                </div>
+            </div>
+
+            <!-- 新思路 -->
+            <div class="p-4 border border-green-200 bg-green-50 rounded-lg">
+                <h4 class="font-bold text-green-500 mb-2"><i class="fa-solid fa-magnifying-glass-chart mr-2"></i>新思路（高效）：「即时检索」✅</h4>
+                <ol class="list-decimal list-inside text-gray-600 space-y-2 ml-2">
+                    <li>让 AI 先记「资料在哪」：（如“销量数据存在 XX 表格里，用户评论在 XX 链接里”）</li>
+                    <li>干活时「实时去拿」：（写“爆款分析”时，再调该产品的 3 个月销量数据）</li>
+                </ol>
+                <div class="flex justify-center mt-3">
+                    <i class="fa-solid fa-search text-4xl text-green-400"></i>
+                </div>
+            </div>
+
+            <!-- 混合模式 -->
+            <div class="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                <h4 class="font-semibold text-gray-800 mb-1"><i class="fa-solid fa-arrows-spin text-blue-500 mr-2"></i>进阶方案：「混合模式」🔄</h4>
+                <ul class="list-disc list-inside text-gray-600 space-y-1 ml-2">
+                    <li>提前塞「常用信息」：如 Q3 整体销量汇总（不用反复查）</li>
+                    <li>实时查「细节信息」：如某款产品的周销量（用的时候再拿）</li>
+                </ul>
+                <p class="text-gray-600 mt-2 text-center text-sm">类比：你写报告时，不用把所有文件摊桌上，记着“文件在 D 盘”，需要再打开～</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第6页：方法3 - 长期任务处理 -->
+    <div class="ppt-page" id="page6">
+        <h2 class="text-2.5xl font-bold text-gray-800 mb-6 text-center">怎么搞？（3/3）长期任务：记笔记+分工 📅</h2>
+        <div class="w-full max-w-4xl bg-white rounded-lg shadow-md p-6">
+            <p class="text-center text-gray-700 mb-6"><i class="fa-solid fa-calendar-days text-blue-500 mr-2"></i>场景：连续 1 个月跟进项目，写每周报告（信息多、时间长，AI 记不下！）</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- 压缩法 -->
+                <div class="p-4 bg-purple-50 rounded-lg text-center">
+                    <i class="fa-solid fa-box-archive text-4xl text-purple-500 mb-3"></i>
+                    <h4 class="font-semibold text-purple-600 mb-2">1. 压缩法 📦</h4>
+                    <p class="text-gray-600 text-sm">把上周报告总结成“3个核心要点”（如“销量涨10%，反馈集中物流慢”），不存完整报告，省空间！</p>
+                </div>
+
+                <!-- 结构化笔记 -->
+                <div class="p-4 bg-green-50 rounded-lg text-center">
+                    <i class="fa-solid fa-notes text-4xl text-green-500 mb-3"></i>
+                    <h4 class="font-semibold text-green-600 mb-2">2. 结构化笔记 📒</h4>
+                    <p class="text-gray-600 text-sm">让 AI 记“任务进度”：<br>✅已完成/⏰待办/⚠️注意<br>（如“待办：周三查库存”）</p>
+                </div>
+
+                <!-- 多AI分工 -->
+                <div class="p-4 bg-blue-50 rounded-lg text-center">
+                    <i class="fa-solid fa-people-group text-4xl text-blue-500 mb-3"></i>
+                    <h4 class="font-semibold text-blue-600 mb-2">3. 多 AI 分工 👥</h4>
+                    <p class="text-gray-600 text-sm">主 AI 定计划+汇总，子 AI 干细活（查数据/写分析），子 AI 只发“1页摘要”，效率翻倍！</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第7页：总结 -->
+    <div class="ppt-page" id="page7">
+        <h2 class="text-2.5xl font-bold text-gray-800 mb-6 text-center">总结：上下文工程的核心就 1 句话 🎯</h2>
+        <div class="w-full max-w-4xl bg-white rounded-lg shadow-md p-8 text-center space-y-6">
+            <div class="p-6 bg-blue-50 rounded-lg border border-blue-200">
+                <h3 class="text-2xl font-bold text-blue-600 mb-2">给 AI「最有用的最小信息包」</h3>
+                <p class="text-gray-600">→ 别让它看一堆没用的（省注意力），别让它缺关键的（保效果）！</p>
+            </div>
+
+            <div class="p-4 bg-green-50 rounded-lg">
+                <h4 class="font-semibold text-green-600 mb-2"><i class="fa-solid fa-rocket mr-2"></i>未来趋势 🚀</h4>
+                <p class="text-gray-600">AI 会越来越聪明，不用我们写太细的规则，但“不浪费 AI 注意力”这件事，永远是关键！</p>
+            </div>
+
+            <div class="p-4 bg-gray-50 rounded-lg text-left">
+                <h4 class="font-semibold text-gray-700 mb-2 text-center">一句话回顾关键方法：</h4>
+                <ol class="list-decimal list-inside text-gray-600 space-y-1 ml-2">
+                    <li>基础包：简洁不极端，工具别堆多</li>
+                    <li>干活时：即时拿资料，混合模式更高效</li>
+                    <li>长期活：压缩+笔记+分工，搞定复杂任务</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导航按钮 -->
+    <button class="nav-btn prev-btn" id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="nav-btn next-btn" id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+    <!-- 页码显示 -->
+    <div class="page-num" id="pageNum">第 1 页 / 共 7 页</div>
+
+    <!-- 交互逻辑：页面切换 -->
+    <script>
+        let currentPage = 1;
+        const totalPages = 7;
+        const pageElements = document.querySelectorAll('.ppt-page');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const pageNumText = document.getElementById('pageNum');
+
+        // 更新页面显示
+        function updatePage() {
+            // 隐藏所有页面，显示当前页
+            pageElements.forEach((page, index) => {
+                if (index + 1 === currentPage) {
+                    page.classList.add('active');
+                } else {
+                    page.classList.remove('active');
+                }
+            });
+            // 更新页码
+            pageNumText.textContent = `第 ${currentPage} 页 / 共 ${totalPages} 页`;
+            // 禁用边界按钮（第一页不能前翻，最后一页不能后翻）
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+            prevBtn.style.opacity = currentPage === 1 ? '0.5' : '1';
+            nextBtn.style.opacity = currentPage === totalPages ? '0.5' : '1';
+        }
+
+        // 前一页
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                updatePage();
+            }
+        });
+
+        // 后一页
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updatePage();
+            }
+        });
+
+        // 键盘方向键控制
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') prevBtn.click();
+            if (e.key === 'ArrowRight') nextBtn.click();
+        });
+
+        // 初始化页面
+        updatePage();
+    </script>
+</body>
+</html>

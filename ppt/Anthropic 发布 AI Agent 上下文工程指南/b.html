@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent 上下文工程指南 - 网页版PPT</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome 图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 基础PPT样式：全屏容器 + 隐藏滚动条 */
+        body { margin: 0; overflow: hidden; font-family: 'Microsoft YaHei', Arial, sans-serif; }
+        .ppt-slide { 
+            width: 100vw; 
+            height: 100vh; 
+            display: none; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 2rem; 
+            box-sizing: border-box; 
+            background-color: #f8fafc; 
+        }
+        .ppt-slide.active { display: flex; }
+        /* 页码指示器 */
+        .page-indicator {
+            position: fixed;
+            bottom: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .page-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #cbd5e1;
+            cursor: pointer;
+        }
+        .page-dot.active { background-color: #3b82f6; }
+    </style>
+</head>
+<body>
+    <!-- 第1页：封面 -->
+    <div class="ppt-slide active bg-gradient-to-br from-blue-50 to-indigo-50">
+        <div class="text-center max-w-4xl">
+            <div class="text-blue-500 text-6xl mb-4">🤖</div>
+            <h1 class="text-5xl font-bold text-gray-800 mb-6">AI Agent 上下文工程指南</h1>
+            <p class="text-2xl text-gray-600 mb-8">Anthropic 官方发布 · 呼应 Karpathy 观点</p>
+            <div class="flex items-center justify-center gap-4 text-gray-500">
+                <i class="fa-solid fa-pen-nib"></i>
+                <p>作者：Anthropic Applied AI 团队</p>
+                <span class="mx-2">|</span>
+                <i class="fa-solid fa-calendar"></i>
+                <p>发布时间：2025.10.02</p>
+                <span class="mx-2">|</span>
+                <i class="fa-solid fa-orgchart"></i>
+                <p>来源：Datawhale</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第2页：上下文工程 vs 提示词工程 -->
+    <div class="ppt-slide bg-white">
+        <div class="w-full max-w-6xl">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+                <i class="fa-solid fa-code-compare text-blue-500 mr-2"></i>
+                核心对比：上下文工程 vs 提示词工程
+            </h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- 提示词工程 -->
+                <div class="border-2 border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-500 text-2xl mr-4">📝</div>
+                        <h3 class="text-2xl font-semibold text-gray-700">提示词工程</h3>
+                    </div>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-check-circle text-yellow-500 mt-1 mr-2"></i>
+                            <span>核心：编写/组织 <b>LLM 指令</b>（尤其是系统提示词）</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-check-circle text-yellow-500 mt-1 mr-2"></i>
+                            <span>范围：聚焦 <b>单次任务</b>（分类、文本生成）</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-check-circle text-yellow-500 mt-1 mr-2"></i>
+                            <span>场景：AI 工程初期，简单应用场景</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 上下文工程 -->
+                <div class="border-2 border-blue-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow bg-blue-50">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 text-2xl mr-4">🧩</div>
+                        <h3 class="text-2xl font-semibold text-gray-700">上下文工程</h3>
+                    </div>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-star text-blue-500 mt-1 mr-2"></i>
+                            <span>核心：<b>策划/维护最优 token 集合</b>（含指令、工具、历史等）</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-star text-blue-500 mt-1 mr-2"></i>
+                            <span>范围：覆盖 <b>多轮推理/长期任务</b>，动态管理上下文</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-star text-blue-500 mt-1 mr-2"></i>
+                            <span>场景：工业级 AI 智能体，复杂自主应用</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 text-center text-gray-500 italic">
+                <p>上下文工程是提示词工程的 <b class="text-blue-600">自然演进</b>，更适配复杂智能体需求</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第3页：为何上下文工程如此重要 -->
+    <div class="ppt-slide bg-white">
+        <div class="w-full max-w-6xl">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+                <i class="fa-solid fa-exclamation-circle text-red-500 mr-2"></i>
+                为何上下文工程至关重要？
+            </h2>
+            <div class="space-y-8">
+                <!-- 上下文衰减 -->
+                <div class="border-l-4 border-red-400 pl-6">
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-3">
+                        <i class="fa-solid fa-arrow-trend-down text-red-500 mr-2"></i>
+                        问题1：上下文衰减
+                    </h3>
+                    <p class="text-gray-600 mb-4">随着上下文窗口中 token 数量增加，模型提取信息的能力 <b>逐渐下降</b>（类似人类“注意力不集中”）。</p>
+                    <div class="bg-red-50 rounded-lg p-4 flex items-center justify-center">
+                        <div class="text-center">
+                            <p class="text-gray-500 mb-2">模型注意力准确率</p>
+                            <div class="flex items-end gap-2 h-32">
+                                <div class="w-16 bg-red-400 rounded-t-md" style="height: 90%"></div>
+                                <div class="w-16 bg-red-300 rounded-t-md" style="height: 70%"></div>
+                                <div class="w-16 bg-red-200 rounded-t-md" style="height: 50%"></div>
+                                <div class="w-16 bg-red-100 rounded-t-md" style="height: 30%"></div>
+                            </div>
+                            <p class="text-gray-500 mt-2">上下文 token 数量 →</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 注意力预算有限 -->
+                <div class="border-l-4 border-orange-400 pl-6">
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-3">
+                        <i class="fa-solid fa-brain text-orange-500 mr-2"></i>
+                        问题2：注意力预算有限
+                    </h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-cog text-orange-500 mt-1 mr-2"></i>
+                            <span>Transformer 架构限制：token 间成对关系为 <b>n²</b>，长度增加导致注意力稀释</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-database text-orange-500 mt-1 mr-2"></i>
+                            <span>训练数据偏差：短/中等文本更常见，模型对 <b>长距离依赖</b> 经验不足</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-ruler-combined text-orange-500 mt-1 mr-2"></i>
+                            <span>位置编码插值：扩展上下文长度但 <b>降低位置理解精度</b></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-blue-50 rounded-xl p-4 text-center text-gray-700 font-medium">
+                    <p>→ 结论：上下文是 <b class="text-blue-600">边际收益递减的有限资源</b>，需精准筛选 token！</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第4页：高效上下文的结构 -->
+    <div class="ppt-slide bg-white">
+        <div class="w-full max-w-6xl">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+                <i class="fa-solid fa-sitemap text-green-500 mr-2"></i>
+                高效上下文的核心结构
+            </h2>
+            <p class="text-center text-gray-500 mb-10">核心原则：寻找 <b class="text-green-600">最少数量但信息量最高的 token 集</b></p>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- 系统提示词 -->
+                <div class="bg-green-50 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center text-green-600 text-3xl mx-auto mb-4">📋</div>
+                    <h3 class="text-xl font-semibold text-gray-700 text-center mb-3">系统提示词</h3>
+                    <ul class="space-y-2 text-gray-600 text-sm">
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>语言简单直白，层级清晰</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>避免“硬编码逻辑”和“模糊指导”</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>用 XML/Markdown 分区（如 &lt;background&gt;）</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>从“最小提示”开始迭代优化</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 工具 -->
+                <div class="bg-blue-50 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-3xl mx-auto mb-4">🔧</div>
+                    <h3 class="text-xl font-semibold text-gray-700 text-center mb-3">工具设计</h3>
+                    <ul class="space-y-2 text-gray-600 text-sm">
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-wrench text-blue-500 mt-1 mr-2"></i>
+                            <span>功能单一明确，避免重叠</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-wrench text-blue-500 mt-1 mr-2"></i>
+                            <span>输入参数描述清晰，适配 LLM 优势</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-wrench text-blue-500 mt-1 mr-2"></i>
+                            <span>避免工具集庞杂（人类难选则 AI 更难）</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-wrench text-blue-500 mt-1 mr-2"></i>
+                            <span>返回“token 高效”的信息</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 示例（少样本提示） -->
+                <div class="bg-purple-50 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 text-3xl mx-auto mb-4">📚</div>
+                    <h3 class="text-xl font-semibold text-gray-700 text-center mb-3">示例（少样本提示）</h3>
+                    <ul class="space-y-2 text-gray-600 text-sm">
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-book-open text-purple-500 mt-1 mr-2"></i>
+                            <span>“一图胜千言”，示例比规则更有效</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-book-open text-purple-500 mt-1 mr-2"></i>
+                            <span>精选“多样化+规范化”示例，而非堆砌边缘案例</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-book-open text-purple-500 mt-1 mr-2"></i>
+                            <span>示例需精准描绘智能体预期行为</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-book-open text-purple-500 mt-1 mr-2"></i>
+                            <span>避免过长示例，节约 token 资源</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第5页：上下文检索与智能体 -->
+    <div class="ppt-slide bg-white">
+        <div class="w-full max-w-6xl">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+                <i class="fa-solid fa-search text-cyan-500 mr-2"></i>
+                上下文检索与智能体设计
+            </h2>
+            
+            <!-- 智能体定义 -->
+            <div class="bg-cyan-50 rounded-xl p-4 mb-8 text-center">
+                <p class="text-xl text-gray-700">
+                    <b>智能体定义</b>：LLM 在循环中 <b class="text-cyan-600">自主使用工具</b>（Anthropic 范式）
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <!-- 即时检索策略 -->
+                <div class="border border-cyan-200 rounded-2xl p-6">
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-4 flex items-center">
+                        <i class="fa-solid fa-bolt text-cyan-500 mr-2"></i>
+                        即时检索策略
+                    </h3>
+                    <p class="text-gray-600 mb-4">智能体保留“轻量级标识符”（文件路径、链接），<b>运行时动态加载数据</b>，模拟人类“按需获取信息”。</p>
+                    <div class="bg-cyan-50 rounded-lg p-3 text-gray-600 text-sm">
+                        <p class="font-medium mb-2">示例：Claude Code</p>
+                        <p>用 Bash 命令（head/tail）分析数据，无需加载完整文件 → 节约上下文！</p>
+                    </div>
+                    <div class="mt-4 flex items-center text-gray-500">
+                        <i class="fa-solid fa-lightbulb text-cyan-500 mr-2"></i>
+                        <p>元数据（文件名、时间戳）可引导行为优化</p>
+                    </div>
+                </div>
+
+                <!-- 混合检索策略 -->
+                <div class="border border-purple-200 rounded-2xl p-6">
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-4 flex items-center">
+                        <i class="fa-solid fa-layer-group text-purple-500 mr-2"></i>
+                        混合检索策略
+                    </h3>
+                    <p class="text-gray-600 mb-4"><b>预检索 + 即时探索</b>：平衡“响应速度”与“数据新鲜度”。</p>
+                    <div class="bg-purple-50 rounded-lg p-3 text-gray-600 text-sm">
+                        <p class="font-medium mb-2">示例：Claude Code 混合模式</p>
+                        <p>1. 预加载：CLAUDE.md 文件直接入上下文<br>2. 即时探索：用 glob/grep 自主导航文件系统</p>
+                    </div>
+                    <div class="mt-4 flex items-center text-gray-500">
+                        <i class="fa-solid fa-scale-balanced text-purple-500 mr-2"></i>
+                        <p>自主程度取决于任务（法律/金融适合更多预检索）</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 检索权衡 -->
+            <div class="bg-orange-50 rounded-xl p-4 text-center">
+                <p class="text-gray-700">
+                    <i class="fa-solid fa-triangle-exclamation text-orange-500 mr-2"></i>
+                    权衡：即时检索 <b>速度慢</b>，需设计清晰工具/启发式方法，避免智能体“走弯路”
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第6页：长期任务的上下文技术 -->
+    <div class="ppt-slide bg-white">
+        <div class="w-full max-w-6xl">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+                <i class="fa-solid fa-hourglass-half text-amber-500 mr-2"></i>
+                长期任务的上下文解决方案
+            </h2>
+            <p class="text-center text-gray-500 mb-10">针对“token 超上下文窗口”场景（如代码迁移、综合研究）</p>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- 压缩技术 -->
+                <div class="bg-amber-50 rounded-2xl p-6 shadow-sm">
+                    <div class="w-14 h-14 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 text-3xl mx-auto mb-4">🗜️</div>
+                    <h3 class="text-xl font-semibold text-gray-700 text-center mb-3">压缩技术</h3>
+                    <p class="text-gray-600 text-sm mb-3">将接近窗口限制的对话 <b>总结提炼</b>，用摘要重启新上下文。</p>
+                    <div class="bg-white rounded-lg p-3 text-gray-600 text-xs">
+                        <p class="font-medium">Claude Code 实践：</p>
+                        <p>保留架构决策/错误信息，丢弃冗余工具输出 → 保持连贯性！</p>
+                    </div>
+                    <div class="mt-3 text-amber-600 text-xs font-medium">
+                        关键：平衡“压缩精度”与“信息保留”
+                    </div>
+                </div>
+
+                <!-- 结构化笔记 -->
+                <div class="bg-teal-50 rounded-2xl p-6 shadow-sm">
+                    <div class="w-14 h-14 bg-teal-100 rounded-full flex items-center justify-center text-teal-600 text-3xl mx-auto mb-4">📝</div>
+                    <h3 class="text-xl font-semibold text-gray-700 text-center mb-3">结构化笔记</h3>
+                    <p class="text-gray-600 text-sm mb-3">智能体定期记录 <b>持久化笔记</b>（存于上下文外），需时重新载入。</p>
+                    <div class="bg-white rounded-lg p-3 text-gray-600 text-xs">
+                        <p class="font-medium">Claude 玩宝可梦实践：</p>
+                        <p>记录“1234步训练进度”“已探索地图”“战斗策略” → 跨会话连贯！</p>
+                    </div>
+                    <div class="mt-3 text-teal-600 text-xs font-medium">
+                        工具：Anthropic 记忆工具（NOTEs.md 模式）
+                    </div>
+                </div>
+
+                <!-- 子智能体架构 -->
+                <div class="bg-indigo-50 rounded-2xl p-6 shadow-sm">
+                    <div class="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 text-3xl mx-auto mb-4">👥</div>
+                    <h3 class="text-xl font-semibold text-gray-700 text-center mb-3">子智能体架构</h3>
+                    <p class="text-gray-600 text-sm mb-3">主智能体统筹计划，<b>子智能体专注细分任务</b>，仅返回精炼摘要（1000-2000 token）。</p>
+                    <div class="bg-white rounded-lg p-3 text-gray-600 text-xs">
+                        <p class="font-medium">优势：</p>
+                        <p>1. 隔离详细上下文；2. 并行探索提升效率；3. 降低主智能体负担</p>
+                    </div>
+                    <div class="mt-3 text-indigo-600 text-xs font-medium">
+                        适用：复杂研究/分析任务
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第7页：结论 -->
+    <div class="ppt-slide bg-gradient-to-br from-blue-100 to-indigo-100">
+        <div class="w-full max-w-4xl text-center">
+            <div class="text-indigo-500 text-6xl mb-6">✨</div>
+            <h2 class="text-4xl font-bold text-gray-800 mb-8">上下文工程：AI 智能体的核心竞争力</h2>
+            
+            <div class="space-y-6 text-left text-gray-700">
+                <div class="bg-white/70 backdrop-blur-sm rounded-xl p-4">
+                    <p class="text-lg">
+                        <i class="fa-solid fa-key text-indigo-500 mr-2"></i>
+                        <b>核心转变</b>：从“找完美提示词” → “管理有限注意力资源”
+                    </p>
+                </div>
+                <div class="bg-white/70 backdrop-blur-sm rounded-xl p-4">
+                    <p class="text-lg">
+                        <i class="fa-solid fa-compass text-indigo-500 mr-2"></i>
+                        <b>指导原则</b>：始终寻找“最小高信号 token 集”，最大化期望结果概率
+                    </p>
+                </div>
+                <div class="bg-white/70 backdrop-blur-sm rounded-xl p-4">
+                    <p class="text-lg">
+                        <i class="fa-solid fa-rocket text-indigo-500 mr-2"></i>
+                        <b>未来趋势</b>：模型能力增强 → 智能体自主性提升 → 减少人类干预，但“上下文稀缺性”仍核心
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-12 text-gray-500">
+                <p>致谢：Anthropic Applied AI 团队 | 来源：Anthropic 工程博客</p>
+                <p class="mt-2">
+                    <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" class="text-indigo-600 underline">
+                        原文链接 →
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页码指示器 -->
+    <div class="page-indicator">
+        <div class="page-dot active" data-page="0"></div>
+        <div class="page-dot" data-page="1"></div>
+        <div class="page-dot" data-page="2"></div>
+        <div class="page-dot" data-page="3"></div>
+        <div class="page-dot" data-page="4"></div>
+        <div class="page-dot" data-page="5"></div>
+        <div class="page-dot" data-page="6"></div>
+    </div>
+
+    <script>
+        // 当前页码
+        let currentPage = 0;
+        // 所有幻灯片
+        const slides = document.querySelectorAll('.ppt-slide');
+        // 所有页码点
+        const dots = document.querySelectorAll('.page-dot');
+        // 总页数
+        const totalPages = slides.length;
+
+        // 切换页面函数
+        function goToPage(page) {
+            // 隐藏当前页
+            slides[currentPage].classList.remove('active');
+            dots[currentPage].classList.remove('active');
+            // 更新当前页码
+            currentPage = page;
+            // 显示目标页
+            slides[currentPage].classList.add('active');
+            dots[currentPage].classList.add('active');
+        }
+
+        // 点击页码点切换
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => goToPage(index));
+        });
+
+        // 键盘方向键切换
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                // 下一页
+                const nextPage = (currentPage + 1) % totalPages;
+                goToPage(nextPage);
+            } else if (e.key === 'ArrowLeft') {
+                // 上一页
+                const prevPage = (currentPage - 1 + totalPages) % totalPages;
+                goToPage(prevPage);
+            }
+        });
+
+        // 点击幻灯片空白处切换下一页（可选）
+        slides.forEach(slide => {
+            slide.addEventListener('click', () => {
+                const nextPage = (currentPage + 1) % totalPages;
+                goToPage(nextPage);
+            });
+        });
+    </script>
+</body>
+</html>
