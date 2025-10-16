@@ -145,3 +145,6 @@ Thumbs.db
 
 # Image assets (user request: do not commit PNG diagrams)
 *.png
+
+# LangGraph runtime state
+langgraph/.langgraph_api/
