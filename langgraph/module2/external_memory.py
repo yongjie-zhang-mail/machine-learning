@@ -1,17 +1,16 @@
 import os
 from dotenv import load_dotenv
 
+# .env file should contain your OPENROUTER_API_KEY
 load_dotenv()
 # https://smith.langchain.com
 os.environ["LANGSMITH_TRACING"] = "true"
 os.environ["LANGSMITH_PROJECT"] = "langgraph"
 
 from langchain_openai import ChatOpenAI
-# .env file should contain your OPENROUTER_API_KEY
 api_key = os.getenv("OPENROUTER_API_KEY")
 model = ChatOpenAI(
     base_url="https://openrouter.ai/api/v1",
-    # model="deepseek/deepseek-chat-v3.1:free",
     model="tngtech/deepseek-r1t2-chimera:free",
     api_key=api_key,
     temperature=0    
@@ -65,7 +64,8 @@ def summarize_conversation(state: State):
 from langgraph.graph import END
 from typing_extensions import Literal
 # Determine whether to end or summarize the conversation
-def should_continue(state: State) -> Literal ["summarize_conversation", END]:    
+# def should_continue(state: State) -> Literal ["summarize_conversation", END]:
+def should_continue(state: State) -> str:
     """Return the next node to execute."""    
     messages = state["messages"]
     
@@ -91,11 +91,22 @@ workflow.add_edge("summarize_conversation", END)
 
 # Compile
 memory = MemorySaver()
+import sqlite3
+# In memory
+# conn = sqlite3.connect(":memory:", check_same_thread = False)
+# pull file if it doesn't exist and connect to local db
+# mkdir -p state_db && [ ! -f state_db/example.db ] && wget -P state_db https://github.com/langchain-ai/langchain-academy/raw/main/module-2/state_db/example.db
+db_path = "state_db/example.db"
+conn = sqlite3.connect(db_path, check_same_thread=False)
+# Here is our checkpointer 
+from langgraph.checkpoint.sqlite import SqliteSaver
+memory = SqliteSaver(conn)
+
 graph = workflow.compile(checkpointer=memory)
 
 # 引入同目录下 util.py 中的工具类 Util，用于渲染图
 from util import Util
-Util.render_graph(g=graph, outfile="summarization.png", overwrite=True)
+Util.render_graph(g=graph, outfile="external_memory.png", overwrite=True)
 
 # Create a thread
 config = {"configurable": {"thread_id": "1"}}
@@ -116,22 +127,10 @@ output = graph.invoke({"messages": [input_message]}, config)
 for m in output['messages'][-1:]:
     m.pretty_print()
 
-# 打印 state 中的 summary 字段
-# summary = memory.load(thread_id="1").get("summary", "")
-summary = graph.get_state(config).values.get("summary","")
-print("Current summary: \n", summary)
+# 查看当前图的状态
+config = {"configurable": {"thread_id": "1"}}
+graph_state = graph.get_state(config)
+print("Current graph state: \n", graph_state)
 
-# 超过 6 个消息，触发总结
-input_message = HumanMessage(content="i like Nick Bosa, isn't he the highest paid defensive player?")
-output = graph.invoke({"messages": [input_message]}, config) 
-for m in output['messages'][-1:]:
-    m.pretty_print()
 
-# 打印 state 中的 summary 字段
-summary = graph.get_state(config).values.get("summary","")
-print("=============================================================================== \n")
-print("Current summary: \n", summary)
 
-print("=============================================================================== \n")
-for m in output['messages'][:]:
-    m.pretty_print()
