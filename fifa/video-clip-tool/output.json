@@ -1,0 +1,35 @@
+[
+    {
+        "match_id": 123456,
+        "streamingVideos": [
+            {
+                "uri": "https://ep-default-mkioprod.westeurope.streaming.mediakind.com/65b217c6-cec2-4c12-b65e-19dd26181ff5/output-ce158-r7985-ce158-r7985-pgm-live.ism/manifest(format=mpd-time-cmaf)",
+                "cameraAngle": "TelevisionFeed"
+            },
+            {
+                "uri": "https://ep-default-mkioprod.westeurope.streaming.mediakind.com/b33250dd-faf1-47e1-a873-9cfa413c1c47/output-ce158-r7985-ce158-r7985-tactical-live.ism/manifest(format=mpd-time-cmaf)",
+                "cameraAngle": "TacticalWide"
+            }
+        ],
+        "events": [
+            {
+                "match_time_in_video": 103,
+                "half_time": 3,
+                "team_name": "SPAIN",
+                "from_player_shirt_number": 10,
+                "from_player_name": "ALEX BAENA",
+                "event_type": "receiving_possession",
+                "event": "reception"
+            },
+            {
+                "match_time_in_video": 5947,
+                "half_time": 3,
+                "team_name": "SPAIN",
+                "from_player_shirt_number": 7,
+                "from_player_name": "RODRIGO",
+                "event_type": "passing_possession",
+                "event": "pass"
+            }
+        ]
+    }
+]

@@ -1,0 +1,39 @@
+[
+    {
+        "match_id": 123456,
+        "events": [
+            {
+                "match_time_in_ms": 5946102,
+                "half_time": 3,
+                "team_name": "SPAIN",
+                "from_player_shirt_number": 10,
+                "from_player_name": "ALEX BAENA",
+                "event_type": "receiving_possession",
+                "event": "reception"
+            },
+            {
+                "match_time_in_ms": 5947102,
+                "half_time": 3,
+                "team_name": "SPAIN",
+                "from_player_shirt_number": 7,
+                "from_player_name": "RODRIGO",
+                "event_type": "passing_possession",
+                "event": "pass"
+            }
+        ]
+    },
+    {
+        "match_id": 234567,
+        "events": [
+            {
+                "match_time_in_ms": 5948102,
+                "half_time": 3,
+                "team_name": "SPAIN",
+                "from_player_shirt_number": 9,
+                "from_player_name": "FERRAN TORRES",
+                "event_type": "shot_on_goal",
+                "event": "shot"
+            }
+        ]
+    }
+]
