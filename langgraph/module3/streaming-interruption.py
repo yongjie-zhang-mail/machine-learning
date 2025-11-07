@@ -1,4 +1,5 @@
 import os
+import asyncio
 from dotenv import load_dotenv
 
 # .env file should contain your OPENROUTER_API_KEY
@@ -97,6 +98,67 @@ graph = workflow.compile(checkpointer=memory)
 # 引入同目录下 util.py 中的工具类 Util，用于渲染图
 from util import Util
 Util.render_graph(g=graph, outfile="streaming-interruption.png", overwrite=True)
+
+# state streaming example
+# Create a thread
+config = {"configurable": {"thread_id": "1"}}
+# Start conversation; updates mode. 
+for chunk in graph.stream({"messages": [HumanMessage(content="hi! I'm Lance")]}, config, stream_mode="updates"):
+    # print(chunk)
+    chunk['conversation']["messages"].pretty_print()
+
+# Start conversation, again
+config = {"configurable": {"thread_id": "2"}}
+# Start conversation; values mode.
+input_message = HumanMessage(content="hi! I'm Lance")
+for event in graph.stream({"messages": [input_message]}, config, stream_mode="values"):
+    for m in event['messages']:
+        m.pretty_print()
+    print("---"*25)
+
+# token streaming example
+async def _run_async_events():
+    """Demonstrate async event streaming (moved into an async function to avoid SyntaxError)."""
+    config = {"configurable": {"thread_id": "3"}}
+    input_message = HumanMessage(content="Tell me about the 49ers NFL team")
+
+    async for event in graph.astream_events({"messages": [input_message]}, config, version="v2"):
+        print(f"Node: {event['metadata'].get('langgraph_node','')}. Type: {event['event']}. Name: {event['name']}")
+
+async def _run_async_token_streaming():
+    node_to_stream = 'conversation'
+    config = {"configurable": {"thread_id": "4"}}
+    input_message = HumanMessage(content="Tell me about the 49ers NFL team")
+
+    async for event in graph.astream_events({"messages": [input_message]}, config, version="v2"):
+        # Get chat model tokens from a particular node 
+        if event["event"] == "on_chat_model_stream" and event['metadata'].get('langgraph_node','') == node_to_stream:
+            print(event["data"])
+
+
+async def _run_async_token_streaming2():
+    node_to_stream = 'conversation'
+    config = {"configurable": {"thread_id": "5"}}
+    input_message = HumanMessage(content="Tell me about the 49ers NFL team")
+
+    async for event in graph.astream_events({"messages": [input_message]}, config, version="v2"):
+        # Get chat model tokens from a particular node 
+        if event["event"] == "on_chat_model_stream" and event['metadata'].get('langgraph_node','') == node_to_stream:
+            data = event["data"]
+            # print(data["chunk"].content, end="|")
+            print(data["chunk"].content)
+
+
+
+
+# if __name__ == "__main__":
+#     # Run the async demo section
+#     try:
+#         # asyncio.run(_run_async_events())
+#         # asyncio.run(_run_async_token_streaming())
+#         # asyncio.run(_run_async_token_streaming2())
+#     except KeyboardInterrupt:
+#         print("Interrupted by user.")
 
 
 
