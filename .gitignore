@@ -143,8 +143,7 @@ fastapi_server.log
 .DS_Store
 Thumbs.db
 
-# Image assets (user request: do not commit PNG diagrams)
-*.png
+# Image assets: PNG 不再忽略（以前曾忽略 *.png）
 
 # LangGraph runtime state
 langgraph/.langgraph_api/
