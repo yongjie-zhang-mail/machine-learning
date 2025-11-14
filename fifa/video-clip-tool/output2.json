@@ -1,0 +1,56 @@
+{
+    "code": "0",
+    "msg": "success",
+    "data": [
+        {
+            "match_id": 123456,
+            "events": [
+                {
+                    "match_time_in_video": 5946102,
+                    "half_time": 3,
+                    "event_type": "receiving_possession",
+                    "event": "reception",
+                    "clips": [
+                        {
+                            "cameraAngle": "TelevisionFeed",
+                            "url": "https://fbai-dev.fifa.org/video-clip/video/load/clip?fileName=b071a7d124f95f0b4805ad25c85e75a6.mp4"
+                        },
+                        {
+                            "cameraAngle": "TacticalWide",
+                            "url": "https://fbai-dev.fifa.org/video-clip/video/load/clip?fileName=b071a7d124f95f0b4805ad25c8512345.mp4"
+                        }
+                    ]
+                },
+                {
+                    "match_time_in_video": 5947102,
+                    "half_time": 3,
+                    "event_type": "passing_possession",
+                    "event": "pass",
+                    "clips": [
+                        {
+                            "cameraAngle": "TelevisionFeed",
+                            "url": "https://fbai-dev.fifa.org/video-clip/video/load/clip?fileName=b071a7d124f95f0b4805ad25c85e75a6.mp4"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "match_id": 234567,
+            "events": [
+                {
+                    "match_time_in_video": 5948102,
+                    "half_time": 3,
+                    "event_type": "shot_on_goal",
+                    "event": "shot",
+                    "clips": [
+                        {
+                            "cameraAngle": "TelevisionFeed",
+                            "url": "https://fbai-dev.fifa.org/video-clip/video/load/clip?fileName=b071a7d124f95f0b4805ad25c85e75a6.mp4"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
