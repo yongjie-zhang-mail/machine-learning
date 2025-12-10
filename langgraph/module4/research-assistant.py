@@ -387,6 +387,16 @@ interview_builder.add_conditional_edges("answer_question", route_messages,['ask_
 interview_builder.add_edge("save_interview", "write_section")
 interview_builder.add_edge("write_section", END)
 
+from langgraph.checkpoint.memory import MemorySaver
+# Compile
+memory = MemorySaver()
+conduct_interview_graph = interview_builder.compile(checkpointer=memory)
+
+# 引入同目录下 util.py 中的工具类 Util，用于渲染图
+from util import Util
+Util.render_graph(g=conduct_interview_graph, outfile="conduct_interview_graph.png", overwrite=True)
+
+
 def initiate_all_interviews(state: ResearchGraphState):
 
     """ Conditional edge to initiate all interviews via Send() API or return to create_analysts """    
@@ -559,4 +569,6 @@ builder.add_edge("finalize_report", END)
 # Compile
 graph = builder.compile(interrupt_before=['human_feedback'])
 
-
+# 引入同目录下 util.py 中的工具类 Util，用于渲染图
+from util import Util
+Util.render_graph(g=graph, outfile="research-assistant-total.png", overwrite=True)
