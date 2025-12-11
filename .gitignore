@@ -147,3 +147,4 @@ Thumbs.db
 
 # LangGraph runtime state
 langgraph/.langgraph_api/
+.langgraph_api/
