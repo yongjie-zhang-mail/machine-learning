@@ -20,6 +20,27 @@ from langgraph.store.memory import InMemoryStore
 
 import configuration
 
+
+# Initialize the model
+# model = ChatOpenAI(model="gpt-4o", temperature=0)
+import os
+from dotenv import load_dotenv
+# .env file should contain your DEEPSEEK_API_KEY
+load_dotenv()
+# Enable Langsmith tracing for this project
+# https://smith.langchain.com
+os.environ["LANGSMITH_TRACING"] = "true"
+os.environ["LANGSMITH_PROJECT"] = "langgraph"
+
+# from langchain_openai import ChatOpenAI
+api_key = os.getenv("DEEPSEEK_API_KEY")
+model = ChatOpenAI(
+    base_url="https://api.deepseek.com",
+    model="deepseek-chat",
+    api_key=api_key,
+    temperature=0
+)
+
 ## Utilities 
 
 # Inspect the tool calls for Trustcall
@@ -123,25 +144,6 @@ class ToDo(BaseModel):
 class UpdateMemory(TypedDict):
     """ Decision on what memory type to update """
     update_type: Literal['user', 'todo', 'instructions']
-
-# Initialize the model
-# model = ChatOpenAI(model="gpt-4o", temperature=0)
-import os
-from dotenv import load_dotenv
-# .env file should contain your DEEPSEEK_API_KEY
-load_dotenv()
-# https://smith.langchain.com
-os.environ["LANGSMITH_TRACING"] = "true"
-os.environ["LANGSMITH_PROJECT"] = "langgraph"
-
-# from langchain_openai import ChatOpenAI
-api_key = os.getenv("DEEPSEEK_API_KEY")
-model = ChatOpenAI(
-    base_url="https://api.deepseek.com",
-    model="deepseek-chat",
-    api_key=api_key,
-    temperature=0
-)
 
 ## Create the Trustcall extractors for updating the user profile and ToDo list
 profile_extractor = create_extractor(
