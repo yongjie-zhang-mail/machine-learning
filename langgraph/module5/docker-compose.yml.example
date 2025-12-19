@@ -39,8 +39,8 @@ services:
         environment:
             REDIS_URI: redis://langgraph-redis:6379
             POSTGRES_URI: postgres://postgres:postgres@langgraph-postgres:5432/postgres?sslmode=disable
-            OPENAI_API_KEY: "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"
-            OPENROUTER_API_KEY: "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"
-            DEEPSEEK_API_KEY: "sk-1946b77c14584ff7a035ed1afacf2b16"
-            LANGSMITH_API_KEY: "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"
-            TAVILY_API_KEY: "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"
+            OPENAI_API_KEY: "sk-xxx"
+            OPENROUTER_API_KEY: "sk-xxx"
+            DEEPSEEK_API_KEY: "sk-xxx"
+            LANGSMITH_API_KEY: "lsv2_xxx"
+            TAVILY_API_KEY: "tvly-xxx"
