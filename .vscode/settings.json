@@ -25,5 +25,19 @@
             "args": ["-l"]
         }
     },
-    "terminal.integrated.defaultProfile.linux": "conda-lab"
+    "terminal.integrated.defaultProfile.linux": "conda-lab",
+    "sqltools.connections": [
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "module5-langgraph-postgres-1",
+            "group": "module5-langgraph",
+            "database": "postgres",
+            "username": "postgres",
+            "password": "postgres"
+        }
+    ]
 }
