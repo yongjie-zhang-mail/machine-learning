@@ -1,0 +1,43 @@
+[
+    {
+        "match_id": "146234",
+        "start_time": 6732662,
+        "duration": 16,
+        "phaseType": 3
+    },
+    {
+        "match_id": "146234",
+        "start_time": 6732662,
+        "duration": 16,
+        "phaseType": 3
+    }
+]
+
+
+
+[
+    {
+        "match_id": "146234",
+        "start_time": 6732662,
+        "end_time": 6732672,
+        "phaseType": 3
+    },
+    {
+        "match_id": "146234",
+        "start_time": 6732662,
+        "end_time": 6732672,
+        "phaseType": 3
+    }
+]
+
+
+咱昨天和 sirus 对的那些微调点 等有空一起对下哈，应该也还会涉及到前端。
+ 
+记得 sirus 和 tom 都说 不需要那么多 机位，主要需要的是 tactical wide 
+ 
+还有他们那个 +- 10s 的 播放
+ 
+感觉好像想要的效果是：（待确认）
+- 主体流媒体全量播放；（可以方便的 +- 10s）
+- 只有需要下载时再切片；
+ 
