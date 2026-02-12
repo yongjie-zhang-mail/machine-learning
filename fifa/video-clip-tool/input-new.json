@@ -17,16 +17,12 @@
 
 [
     {
-        "match_id": "146234",
-        "start_time": 6732662,
-        "end_time": 6732672,
-        "phaseType": 3
-    },
-    {
-        "match_id": "146234",
-        "start_time": 6732662,
-        "end_time": 6732672,
-        "phaseType": 3
+        "matchId": "146234",
+        "startTime": 6732662,
+        "endTime": 6732672,
+        "phaseType": 3,
+        "cameraAngle": "TacticalWide/Camera1/All",
+        "resolution": "1080p/720p/540p/360p",
     }
 ]
 
