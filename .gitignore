@@ -151,3 +151,6 @@ docker-compose.yml
 # LangGraph runtime state
 langgraph/.langgraph_api/
 .langgraph_api/
+
+# Product selling points generated data
+poc/product-selling-points/selling_points.json
