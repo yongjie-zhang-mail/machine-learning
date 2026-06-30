@@ -1,0 +1,16 @@
+[project]
+name = "product-selling-points"
+version = "0.1.0"
+description = "从电商商品详情页长图中提取产品结构化卖点信息（基于 Qwen 多模态模型）"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "openai>=1.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+
+[[tool.uv.index]]
+url = "https://mirrors.ustc.edu.cn/pypi/simple"
+default = true
+
