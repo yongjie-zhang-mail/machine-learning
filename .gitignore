@@ -154,3 +154,8 @@ langgraph/.langgraph_api/
 
 # Product selling points generated data
 poc/product-selling-points/selling_points.json
+
+# data folder
+data
+
+
