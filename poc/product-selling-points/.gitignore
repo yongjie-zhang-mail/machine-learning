@@ -11,3 +11,4 @@ __pycache__/
 
 # Output
 selling_points.json
+*.txt

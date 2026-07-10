@@ -84,7 +84,7 @@ messages = [
 ]
 
 
-enable_thinking = False  # 是否启用思考过程
+enable_thinking = True  # 是否启用思考过程
 reasoning_content = ""  # 定义完整思考过程
 answer_content = ""     # 定义完整回复
 is_answering = False   # 判断是否结束思考过程并开始回复
@@ -110,13 +110,15 @@ for chunk in completion:
         print(json.dumps(chunk.usage.model_dump(), ensure_ascii=False, indent=2))
     else:
         delta = chunk.choices[0].delta
-        # 打印思考过程
-        if hasattr(delta, 'reasoning_content') and delta.reasoning_content is not None:
-            print(delta.reasoning_content, end='', flush=True)
-            reasoning_content += delta.reasoning_content
-        else:
+        # 打印思考过程（注意：回复阶段 reasoning_content 可能是空字符串 ""，用真值判断跳过）
+        reasoning = getattr(delta, 'reasoning_content', None)
+        if reasoning:
+            print(reasoning, end='', flush=True)
+            reasoning_content += reasoning
+        # 打印回复内容（与思考过程独立判断，避免被空字符串的 reasoning_content 抢占分支）
+        if delta.content:
             # 开始回复
-            if delta.content != "" and is_answering is False:
+            if is_answering is False:
                 print("\n" + "=" * 20 + "回答内容" + "=" * 20 + "\n")
                 is_answering = True
             # 打印回复过程
