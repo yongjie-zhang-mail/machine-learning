@@ -1,0 +1,12 @@
+{
+  "own_product": {
+    "name": "本品名称",
+    "url": "https://example.com/own-product.jpg"
+  },
+  "competitors": [
+    { "name": "竞品1", "url": "https://example.com/competitor1.jpg" },
+    { "name": "竞品2", "url": "https://example.com/competitor2.jpg" },
+    { "name": "竞品3", "url": "https://example.com/competitor3.jpg" },
+    { "name": "竞品4", "url": "https://example.com/competitor4.jpg" }
+  ]
+}

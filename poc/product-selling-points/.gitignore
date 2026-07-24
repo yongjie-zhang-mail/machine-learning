@@ -9,6 +9,8 @@ __pycache__/
 # Environment
 .env
 
+# Products config (contains actual image URLs)
+products.json
+
 # Output
-selling_points.json
-*.txt
+poc-result/
